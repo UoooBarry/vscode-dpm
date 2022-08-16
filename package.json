@@ -1,0 +1,118 @@
+{
+  "name": "dpm-vscode",
+	"displayName": "dpm-vscode",
+	"description": "Integrate Docker Package Manager to your vscode",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.70.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+        "onView:packageList"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "dpm-vscode.container-status",
+				"title": "test"
+			},
+			{
+				"command": "dpm-vscode.add-package",
+				"title": "Add A DPM Docker Image",
+				"icon": {
+					"dark": "./assets/dark/plus.png",
+					"light": "./assets/light/plus.png"
+				}
+			},
+			{
+				"command": "dpm-vscode.exec-package",
+				"title": "Start"
+			},
+			{
+				"command": "dpm-vscode.remove-package",
+				"title": "Remove"
+			},
+			{
+				"command": "dpm-vscode.stop-package",
+				"title": "Stop"
+			},
+			{
+				"command": "dpm-vscode.refresh-packages",
+				"title": "Refresh dpm status",
+				"icon": {
+					"dark": "./assets/dark/refresh.png",
+					"light": "./assets/light/refresh.png"
+				}
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "dpm-vscode",
+					"title": "VsCode DPM",
+					"icon": "./assets/docker.png"
+				}
+			]
+		},
+		"views": {
+			"dpm-vscode": [{
+				"id": "packageList",
+				"name": "Docker Package Manager"
+			}]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "dpm-vscode.add-package",
+					"when": "view == packageList",
+					"group": "navigation"
+				},
+				{
+					"command": "dpm-vscode.refresh-packages",
+					"when": "view == packageList",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "dpm-vscode.exec-package",
+					"when": "view == packageList && viewItem == dpm-package"
+				},
+				{
+					"command": "dpm-vscode.stop-package",
+					"when": "view == packageList && viewItem == dpm-package"
+				},
+				{
+					"command": "dpm-vscode.remove-package",
+					"when": "view == packageList && viewItem == dpm-package"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "packageList",
+				"contents": "No docker images found [learn more](https://hub.docker.com/).\n[Add Package](command:dpm-vscode.add-package)"
+			}
+		]
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "yarn run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+        "@types/vscode": "^1.70.0",
+        "@types/glob": "^7.1.4",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "14.x",
+        "eslint": "^8.1.0",
+        "glob": "^7.1.7",
+        "mocha": "^9.1.3",
+        "typescript": "^4.4.4",
+        "@vscode/test-electron": "^1.6.2"
+    }
+
+}
