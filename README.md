@@ -3,11 +3,15 @@
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 ![auto-test](https://github.com/UoooBarry/vscode-dpm/actions/workflows/node.js.yml/badge.svg)
 
-Integrate [DPM](https://github.com/songhuangcn/dpm) to VsCode.
+Integrate [DPM](https://github.com/songhuangcn/dpm) to VsCode. Easily start any docker images without complicated configurations.
 
 ## Prerequisites
 
 This extension relies on [DPM](https://github.com/songhuangcn/dpm) project. Install DPM first is necessary.
+
+### Docker
+
+Ensure [Docker](https://www.docker.com/products/docker-desktop/) is running.
 
 ### Ruby
 
