@@ -1,27 +1,31 @@
 const vscode = require('vscode');
 const ListTreeViewProvider = require('./views/listTreeViewProvider');
-const { savePackage, removePackage } = require('./utils/packages');
-const execShell = require('./utils/execShell');
+const packageRepository = require('./repositories/packageRepository');
+const { startPackage, stopPackage } = require('./dpm/index');
 
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+	const packageRepo = new packageRepository(context);
 	const treeViewProvider = new ListTreeViewProvider(context);
 	const treeViewView = vscode.window.registerTreeDataProvider('packageList', treeViewProvider);
 
-	let disposable = vscode.commands.registerCommand('dpm-vscode.container-status', (params) => {
-		console.log(params)
+	let disposable = vscode.commands.registerCommand('dpm-vscode.container-status', () => {
 		vscode.window.showInformationMessage('Hello World from dpm-vscode!');
 	});
 
 	let savePackageCmd = vscode.commands.registerCommand('dpm-vscode.add-package', () => {
 		vscode.window.showInputBox({
 			title: 'Save Package',
-			placeHolder: 'Package Tag'
+			placeHolder: 'Package Tag.(e.g. mysql:5.7)',
+			validateInput: (text) => {
+				let valid = text.match(/[a-zA-Z]:[a-zA0-9.]/)
+				return valid ? null : 'Invalid Package Tag, please use format: [packageName]:[version]';
+			}
 		}).then((tag) => {
-			savePackage(context, tag);
+			packageRepo.savePackage(tag);
 			treeViewProvider.refresh();
 		})
 	})
@@ -34,7 +38,7 @@ function activate(context) {
 				return false;
 			}
 
-			removePackage(context, fullPackageName);
+			packageRepo.removePackage(fullPackageName);
 			treeViewProvider.refresh();
 		})
 	})
@@ -42,11 +46,11 @@ function activate(context) {
 	let execPackageCmd = vscode.commands.registerCommand('dpm-vscode.exec-package', (params) => {
 		params.then((data) => {
 			const { fullPackageName } = data;
-			let cmd = `dpm start ${fullPackageName}`;
-			execShell(cmd).then(() => {
+
+			startPackage(fullPackageName).then(() => {
 				treeViewProvider.refresh();
 			}).catch((err) => {
-				vscode.window.showWarningMessage(err)
+				vscode.window.showWarningMessage(err);
 			})
 		})
 	})
@@ -58,12 +62,11 @@ function activate(context) {
 	let stopPackageCmd = vscode.commands.registerCommand('dpm-vscode.stop-package', (params) => {
 		params.then((data) => {
 			const { fullPackageName } = data;
-			let cmd = `dpm stop ${fullPackageName}`;
 	
-			execShell(cmd).then(() => {
+			stopPackage(fullPackageName).then(() => {
 				treeViewProvider.refresh();
 			}).catch((err) => {
-				vscode.window.showWarningMessage(err)
+				vscode.window.showWarningMessage(err);
 			})
 		})
 	})
