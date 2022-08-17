@@ -1,7 +1,7 @@
 class stateManager {
   constructor(context) {
-    this.context = context
+    this.context = context;
   }
 }
 
-module.exports = stateManager
+module.exports = stateManager;
