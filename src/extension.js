@@ -2,11 +2,32 @@ const vscode = require('vscode');
 const ListTreeViewProvider = require('./views/listTreeViewProvider');
 const PackageRepository = require('./repositories/packageRepository');
 const { startPackage, stopPackage, getPackageStatus } = require('./dpm/index');
+const { processEnvironment, EnvironmentError } = require('./dpm/processEnvironment');
 
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
+async function activate(context) {
+  // Check all the environment variables
+  try {
+    await processEnvironment();
+  } catch (e) {
+    if (e instanceof EnvironmentError) {
+      vscode.window.showErrorMessage(e.message, ...e.items)
+        .then((selection) => {
+          switch (selection) {
+            case 'Open In Github':
+              vscode.env.openExternal(vscode.Uri.parse('https://github.com/songhuangcn/dpm'));
+              break;
+            default:
+              break;
+          }
+        });
+    } else {
+      throw e;
+    }
+  }
+
   const packageRepo = new PackageRepository(context);
   const treeViewProvider = new ListTreeViewProvider(context);
   const treeViewView = vscode.window.registerTreeDataProvider('packageList', treeViewProvider);
@@ -60,7 +81,7 @@ function activate(context) {
     });
   });
 
-  const refreshPackagesCmd = vscode.commands.registerCommand('dpm-vscode.refresh-packages', () => {
+  const refreshPackagesCmd = vscode.commands.registerCommand('dpm-vscode.refresh-packages', async () => {
     treeViewProvider.refresh();
   });
 

@@ -2,6 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 const vscode = require('vscode');
 const PackageTreeItem = require('./packageTreeItem');
+const PackageTreeGroup = require('./packageTreeGroup');
 
 const PackageRepository = require('../repositories/packageRepository');
 
@@ -29,7 +30,7 @@ class ListTreeViewProvider {
     // return root
     const uniqPackageName = this.packageRepo.getPackageGroups();
     // eslint-disable-next-line max-len
-    const items = uniqPackageName.map((name) => new vscode.TreeItem(name, vscode.TreeItemCollapsibleState.Collapsed));
+    const items = uniqPackageName.map((name) => new PackageTreeGroup(name, vscode.TreeItemCollapsibleState.Collapsed));
     return Promise.resolve(items);
   }
 

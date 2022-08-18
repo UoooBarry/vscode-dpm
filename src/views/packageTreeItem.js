@@ -1,3 +1,4 @@
+const path = require('path');
 const vscode = require('vscode');
 const { getIsPackageUp } = require('../dpm/index');
 
@@ -10,6 +11,8 @@ class PackageTreeItem extends vscode.TreeItem {
     this.command = command;
     this.fullPackageName = fullPackageName;
     this.contextValue = 'dpm-package';
+
+    [this.groupName] = fullPackageName.split(':');
   }
 
   /* Checking if the container is running or not. */
@@ -27,6 +30,7 @@ class PackageTreeItem extends vscode.TreeItem {
     return new Promise((resolve) => {
       this.getDockerPS().then((isRunning) => {
         this.description = PackageTreeItem.getStatusLabel(isRunning);
+        this.contextValue = `dpm-package${isRunning ? ' running' : ''}`;
         resolve(this.description);
       });
     });
