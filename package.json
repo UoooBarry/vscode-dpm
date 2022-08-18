@@ -1,7 +1,19 @@
 {
 	"name": "dpm-vscode",
-	"displayName": "dpm-vscode",
-	"description": "Integrate Docker Package Manager to your vscode",
+	"displayName": "VsCode Docker Package Manager",
+	"description": "Start any docker images easily within vscode",
+	"homepage": "https://github.com/UoooBarry/vscode-dpm",
+	"publisher": "UoooBarry",
+	"icon": "assets/docker.png",
+	"keywords": [
+		"Docker",
+		"Docker Package Manager",
+		"Start Docker Images"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/UoooBarry/vscode-dpm"
+	},
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.70.0"
@@ -85,7 +97,7 @@
 				},
 				{
 					"command": "dpm-vscode.stop-package",
-					"when": "view == packageList && viewItem == dpm-package"
+					"when": "view == packageList && viewItem == dpm-package running"
 				},
 				{
 					"command": "dpm-vscode.remove-package",

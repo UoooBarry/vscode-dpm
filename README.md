@@ -37,6 +37,8 @@ gem install dpmrb
 
 ## Usage
 
+![new-start-package](./docs/assets/gifs/new-start-package.gif)
+
 ### Add a package
 
 Open command palette and type: `Add A DPM Package`, or use the `+` icon in GUI.
