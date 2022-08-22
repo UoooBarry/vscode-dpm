@@ -22,6 +22,12 @@ const getIsPackageUp = (packageName) => {
   return execShell(cmd);
 };
 
+const testPackage = (packageName) => {
+  const cmd = `dpm start -d ${packageName}`;
+
+  return execShell(cmd);
+};
+
 module.exports = {
-  startPackage, stopPackage, getIsPackageUp, getPackageStatus,
+  startPackage, stopPackage, getIsPackageUp, getPackageStatus, testPackage,
 };

@@ -22,7 +22,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:packageList"
+		"onView:packageList",
+		"onCommand:dpm-vscode.add-package"
 	],
 	"main": "./src/extension.js",
 	"contributes": {
@@ -34,7 +35,7 @@
 			{
 				"command": "dpm-vscode.add-package",
 				"title": "Add A DPM Docker Image",
-				"icon": {
+				"icon": { 
 					"dark": "./assets/dark/plus.png",
 					"light": "./assets/light/plus.png"
 				}
@@ -93,15 +94,18 @@
 			"view/item/context": [
 				{
 					"command": "dpm-vscode.exec-package",
-					"when": "view == packageList && viewItem == dpm-package"
+					"when": "view == packageList && viewItem == dpm-package",
+					"group": "group@1"
 				},
 				{
 					"command": "dpm-vscode.stop-package",
-					"when": "view == packageList && viewItem == dpm-package running"
+					"when": "view == packageList && viewItem == dpm-package running",
+					"group": "group@2"
 				},
 				{
 					"command": "dpm-vscode.remove-package",
-					"when": "view == packageList && viewItem == dpm-package"
+					"when": "view == packageList && viewItem == dpm-package",
+					"group": "group@3"
 				}
 			]
 		},

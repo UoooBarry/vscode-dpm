@@ -1,10 +1,24 @@
+const vscode = require('vscode');
 const stateManager = require('./stateManager');
+const { testPackage } = require('../dpm/index');
 
 class PackageRepository extends stateManager {
-  savePackage(packageName) {
+  async savePackage(packageName) {
     if (!packageName) return;
 
-    this.context.globalState.update(packageName, true);
+    const validation = await this.ifPackageValid(packageName);
+    if (validation.error) {
+      vscode.window.showErrorMessage(validation.message);
+
+      return;
+    }
+
+    let processPackageName = packageName;
+
+    if (!packageName.includes(':')) {
+      processPackageName = `${packageName}:latest`;
+    }
+    this.context.globalState.update(processPackageName, true);
   }
 
   removePackage(packageName) {
@@ -34,8 +48,14 @@ class PackageRepository extends stateManager {
   }
 
   getPackageTags(packageName) {
-    const pattern = new RegExp(`^${packageName}:[0-9.]`, 'g');
+    const pattern = new RegExp(`^${packageName}:[a-zA-Z0-9.]`, 'g');
     return this.getAllPackages().filter((p) => p.match(pattern));
+  }
+
+  async ifPackageValid(packageName) {
+    const out = await testPackage(packageName);
+
+    return { error: out.includes('Error'), message: out };
   }
 }
 
