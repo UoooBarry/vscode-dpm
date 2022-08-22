@@ -45,7 +45,7 @@ async function activate(context) {
       title: 'Save Package',
       placeHolder: 'Package Tag.(e.g. mysql:5.7)',
       validateInput: (text) => {
-        const valid = text.match(/[a-zA-Z]:[a-zA0-9.]/);
+        const valid = text.match(/^[a-zA-Z:]+[a-zA-Z0-9.]$|^[a-zA-Z0-9]$/);
         return valid ? null : 'Invalid Package Tag, please use format: [packageName]:[version]';
       },
     }).then((tag) => {

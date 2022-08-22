@@ -5,6 +5,10 @@
 
 Integrate [DPM](https://github.com/songhuangcn/dpm) to VsCode. Easily start any docker images without complicated configurations.
 
+## Supported Packages
+
+You can check current supported packages list on [DPM](https://github.com/songhuangcn/dpm/tree/main/packages) repository.
+
 ## Prerequisites
 
 This extension relies on [DPM](https://github.com/songhuangcn/dpm) project. Install DPM first is necessary.
