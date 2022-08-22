@@ -1,17 +1,12 @@
-const vscode = require('vscode');
 const stateManager = require('./stateManager');
-const { testPackage } = require('../dpm/index');
+const { dryRunPackage } = require('../dpm/index');
 
 class PackageRepository extends stateManager {
   async savePackage(packageName) {
     if (!packageName) return;
 
-    const validation = await PackageRepository.ifPackageValid(packageName);
-    if (validation.error) {
-      vscode.window.showErrorMessage(validation.message);
-
-      return;
-    }
+    const validation = await PackageRepository.isPackageValid(packageName);
+    if (validation.error) throw new Error(validation.message);
 
     let processPackageName = packageName;
 
@@ -52,8 +47,8 @@ class PackageRepository extends stateManager {
     return this.getAllPackages().filter((p) => p.match(pattern));
   }
 
-  static async ifPackageValid(packageName) {
-    const out = await testPackage(packageName);
+  static async isPackageValid(packageName) {
+    const out = await dryRunPackage(packageName);
 
     return { error: out.includes('Error'), message: out };
   }

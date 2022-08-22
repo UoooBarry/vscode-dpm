@@ -3,6 +3,7 @@ const ListTreeViewProvider = require('./views/listTreeViewProvider');
 const PackageRepository = require('./repositories/packageRepository');
 const { startPackage, stopPackage, getPackageStatus } = require('./dpm/index');
 const { processEnvironment, EnvironmentError } = require('./dpm/processEnvironment');
+const { showPackageDropdownBox, showTagDropDownBox } = require('./views/showPackageDropdownBox');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -41,17 +42,20 @@ async function activate(context) {
   });
 
   const savePackageCmd = vscode.commands.registerCommand('dpm-vscode.add-package', () => {
-    vscode.window.showInputBox({
-      title: 'Save Package',
-      placeHolder: 'Package Tag.(e.g. mysql:5.7)',
-      validateInput: (text) => {
-        const valid = text.match(/^[a-zA-Z:]+[a-zA-Z0-9.]$|^[a-zA-Z0-9]$/);
-        return valid ? null : 'Invalid Package Tag, please use format: [packageName]:[version]';
-      },
-    }).then((tag) => {
-      packageRepo.savePackage(tag);
-      treeViewProvider.refresh();
-    });
+    showPackageDropdownBox()
+      .then((packageName) => {
+        showTagDropDownBox(packageName).then(async (tag) => {
+          if (!tag) return;
+
+          try {
+            await packageRepo.savePackage(`${packageName}:${tag}`);
+            treeViewProvider.refresh();
+            vscode.showInformationMessage(`${packageName}:${tag} is saved`);
+          } catch (e) {
+            vscode.window.showErrorMessage(e.message);
+          }
+        });
+      });
   });
 
   const removePackageCmd = vscode.commands.registerCommand('dpm-vscode.remove-package', (params) => {

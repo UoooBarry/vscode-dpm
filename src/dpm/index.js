@@ -2,12 +2,12 @@ const execShell = require('../utils/execShell');
 
 const startPackage = (packageName) => {
   const cmd = `dpm start ${packageName}`;
-  return execShell(cmd);
+  return execShell(cmd, true);
 };
 
 const stopPackage = (packageName) => {
   const cmd = `dpm stop ${packageName}`;
-  return execShell(cmd);
+  return execShell(cmd, true);
 };
 
 const getPackageStatus = (packageName) => {
@@ -22,12 +22,30 @@ const getIsPackageUp = (packageName) => {
   return execShell(cmd);
 };
 
-const testPackage = (packageName) => {
+const dryRunPackage = (packageName) => {
   const cmd = `dpm start -d ${packageName}`;
 
   return execShell(cmd);
 };
 
+const listPackages = () => {
+  const cmd = 'dpm packages';
+
+  return execShell(cmd);
+};
+
+const listTags = (packageName) => {
+  const cmd = `dpm tags ${packageName}`;
+
+  return execShell(cmd);
+};
+
 module.exports = {
-  startPackage, stopPackage, getIsPackageUp, getPackageStatus, testPackage,
+  startPackage,
+  stopPackage,
+  getIsPackageUp,
+  getPackageStatus,
+  dryRunPackage,
+  listPackages,
+  listTags,
 };
