@@ -6,7 +6,7 @@ class PackageRepository extends stateManager {
   async savePackage(packageName) {
     if (!packageName) return;
 
-    const validation = await this.ifPackageValid(packageName);
+    const validation = await PackageRepository.ifPackageValid(packageName);
     if (validation.error) {
       vscode.window.showErrorMessage(validation.message);
 
@@ -52,7 +52,7 @@ class PackageRepository extends stateManager {
     return this.getAllPackages().filter((p) => p.match(pattern));
   }
 
-  async ifPackageValid(packageName) {
+  static async ifPackageValid(packageName) {
     const out = await testPackage(packageName);
 
     return { error: out.includes('Error'), message: out };

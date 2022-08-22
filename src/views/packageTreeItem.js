@@ -1,4 +1,3 @@
-const path = require('path');
 const vscode = require('vscode');
 const { getIsPackageUp } = require('../dpm/index');
 
