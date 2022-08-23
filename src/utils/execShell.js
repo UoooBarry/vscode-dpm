@@ -2,7 +2,7 @@
 const cp = require('child_process');
 const vscode = require('vscode');
 
-const execShell = (cmd, print = true) => new Promise((resolve, reject) => {
+const execShell = (cmd, print = false) => new Promise((resolve, reject) => {
   cp.exec(cmd, (err, out) => {
     if (print) vscode.window.showInformationMessage(out);
 

@@ -5,6 +5,8 @@
 
 Integrate [DPM](https://github.com/songhuangcn/dpm) to VsCode. Easily start any docker images without complicated configurations.
 
+Published on [VsCode Marketplace](https://marketplace.visualstudio.com/items?itemName=UoooBarry.dpm-vscode).
+
 ## Supported Packages
 
 You can check current supported packages list on [DPM](https://github.com/songhuangcn/dpm/tree/main/packages) repository.
@@ -41,14 +43,4 @@ gem install dpmrb
 
 ## Usage
 
-![new-start-package](./docs/assets/gifs/new-start-package.gif)
-
-### Add a package
-
-Open command palette and type: `Add A DPM Package`, or use the `+` icon in GUI.
-
-![add-package](./docs/assets/gifs/add-package.gif)
-
-### Start a service
-
-![start-package](./docs/assets/gifs/start-package.gif)
+![new-start-package](./docs/assets/gifs/save-start.gif)

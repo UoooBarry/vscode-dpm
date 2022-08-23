@@ -10,7 +10,7 @@ class EnvironmentError extends Error {
 
 const checkRubyVersion = async () => {
   const cmd = 'ruby -v';
-  const rubyVersion = await execShell(cmd, false);
+  const rubyVersion = await execShell(cmd);
 
   if (!rubyVersion) {
     throw new EnvironmentError('Cannot detect ruby version');
@@ -19,14 +19,14 @@ const checkRubyVersion = async () => {
 
 const checkDockerRunning = async () => {
   const cmd = 'docker ps';
-  await execShell(cmd, false).catch(() => {
+  await execShell(cmd).catch(() => {
     throw new EnvironmentError('Cannot detect docker');
   });
 };
 
 const checkDPMVersion = async () => {
   const cmd = 'dpm help';
-  await execShell(cmd, false).catch(() => {
+  await execShell(cmd).catch(() => {
     throw new EnvironmentError('Cannot detect DPM, please install', ['Open In Github']);
   });
 };
