@@ -50,7 +50,7 @@ async function activate(context) {
           try {
             await packageRepo.savePackage(`${packageName}:${tag}`);
             treeViewProvider.refresh();
-            vscode.showInformationMessage(`${packageName}:${tag} is saved`);
+            vscode.window.showInformationMessage(`${packageName}:${tag} is saved`);
           } catch (e) {
             vscode.window.showErrorMessage(e.message);
           }
