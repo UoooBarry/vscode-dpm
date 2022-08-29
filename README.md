@@ -43,4 +43,14 @@ gem install dpmrb
 
 ## Usage
 
+<center>
+
+Add a supported package.
+
 ![new-start-package](./docs/assets/gifs/save-start.gif)
+
+Add an unsupported package using raw mode.
+
+![raw-start-package](./docs/assets/gifs/raw-packages.gif)
+
+</center>
