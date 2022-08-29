@@ -23,7 +23,8 @@
 	],
 	"activationEvents": [
 		"onView:packageList",
-		"onCommand:dpm-vscode.add-package"
+		"onCommand:dpm-vscode.add-package",
+		"onCommand:dpm-vscode.add-raw-package"
 	],
 	"main": "./src/extension.js",
 	"contributes": {
@@ -39,6 +40,10 @@
 					"dark": "./assets/dark/plus.png",
 					"light": "./assets/light/plus.png"
 				}
+			},
+			{
+				"command": "dpm-vscode.add-raw-package",
+				"title": "Add A Raw DPM Package"
 			},
 			{
 				"command": "dpm-vscode.exec-package",
