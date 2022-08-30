@@ -1,7 +1,8 @@
 const execShell = require('../utils/execShell');
 
-const startPackage = (packageName) => {
-  const cmd = `dpm start ${packageName}`;
+const startPackage = (packageName, isRaw = false) => {
+  const cmd = `dpm start ${isRaw ? '-r' : ''} ${packageName}`;
+
   return execShell(cmd, true);
 };
 
@@ -22,8 +23,8 @@ const getIsPackageUp = (packageName) => {
   return execShell(cmd);
 };
 
-const dryRunPackage = (packageName) => {
-  const cmd = `dpm start -d ${packageName}`;
+const dryRunPackage = (packageName, isRaw = false) => {
+  const cmd = `dpm start ${isRaw ? '-r' : ''} -d ${packageName}`;
 
   return execShell(cmd);
 };

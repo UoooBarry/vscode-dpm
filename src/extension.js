@@ -58,11 +58,33 @@ async function activate(context) {
       });
   });
 
+  const saveRawPackageCmd = vscode.commands.registerCommand('dpm-vscode.add-raw-package', () => {
+    vscode.window.showInputBox({
+      title: 'Save Raw Package',
+      placeHolder: 'Package Tag.(e.g. mysql:5.7)',
+      validateInput: (text) => {
+        const valid = text.match(/[a-zA-Z]:[a-zA0-9.]|^\w+$/);
+        return valid ? null : 'Invalid Package Tag, please use format: [packageName]:[version]';
+      },
+    }).then(async (tag) => {
+      if (!tag) return;
+
+      // save raw package, dry run with -r
+      try {
+        await packageRepo.savePackage(tag, true);
+        treeViewProvider.refresh();
+        vscode.window.showInformationMessage(`${tag} is saved as raw.`);
+      } catch (e) {
+        vscode.window.showErrorMessage(e.message);
+      }
+    });
+  });
+
   const removePackageCmd = vscode.commands.registerCommand('dpm-vscode.remove-package', (params) => {
     params.then((data) => {
       const { fullPackageName, isRunning } = data;
       if (isRunning) {
-        vscode.window.showErrorMessage('Cannot remove running package');
+        vscode.window.showErrorMessage('Cannot remove running package.');
         return false;
       }
 
@@ -76,8 +98,9 @@ async function activate(context) {
   const execPackageCmd = vscode.commands.registerCommand('dpm-vscode.exec-package', (params) => {
     params.then((data) => {
       const { fullPackageName } = data;
+      const isRaw = packageRepo.getPackageRaw(fullPackageName);
 
-      startPackage(fullPackageName).then(() => {
+      startPackage(fullPackageName, isRaw).then(() => {
         treeViewProvider.refresh();
       }).catch((err) => {
         vscode.window.showWarningMessage(err);
@@ -108,6 +131,7 @@ async function activate(context) {
   context.subscriptions.push(refreshPackagesCmd);
   context.subscriptions.push(execPackageCmd);
   context.subscriptions.push(stopPackageCmd);
+  context.subscriptions.push(saveRawPackageCmd);
 }
 
 // this method is called when your extension is deactivated
