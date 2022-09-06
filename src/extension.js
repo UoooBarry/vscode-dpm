@@ -2,7 +2,7 @@ const vscode = require('vscode');
 const ListTreeViewProvider = require('./views/listTreeViewProvider');
 const PackageRepository = require('./repositories/packageRepository');
 const { startPackage, stopPackage, getPackageStatus } = require('./dpm/index');
-const { processEnvironment, EnvironmentError } = require('./dpm/processEnvironment');
+const { processEnvironment, EnvironmentError, updateDPM } = require('./dpm/processEnvironment');
 const { showPackageDropdownBox, showTagDropDownBox } = require('./views/showPackageDropdownBox');
 
 /**
@@ -19,6 +19,9 @@ async function activate(context) {
           switch (selection) {
             case 'Open In Github':
               vscode.env.openExternal(vscode.Uri.parse('https://github.com/songhuangcn/dpm'));
+              break;
+            case 'Update DPM':
+              updateDPM();
               break;
             default:
               break;

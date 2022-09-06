@@ -29,6 +29,26 @@ const checkDPMVersion = async () => {
   await execShell(cmd).catch(() => {
     throw new EnvironmentError('Cannot detect DPM, please install', ['Open In Github']);
   });
+
+  await execShell('dpm -v').then(async (installedVersion) => {
+    const latest = await execShell("gem search 'dpmrb' | GREP -o '[0-9.]' | tr -d '\n'");
+
+    if (installedVersion.trim() !== latest.trim()) {
+      throw new EnvironmentError('DPM has a new release, please update', ['Update DPM', 'Open In Github']);
+    }
+  }).catch((e) => {
+    // If catch EnvironmentError throw from version different, throw it
+    if (e instanceof EnvironmentError) throw e;
+
+    // unknown error throw a not detect message
+    throw new EnvironmentError('Cannot detect DPM, please install', ['Open In Github']);
+  });
+};
+
+const updateDPM = () => {
+  const cmd = 'gem update dpm';
+
+  return execShell(cmd, true);
 };
 
 const processEnvironment = async () => {
@@ -37,4 +57,4 @@ const processEnvironment = async () => {
   await checkDPMVersion();
 };
 
-module.exports = { processEnvironment, EnvironmentError };
+module.exports = { processEnvironment, EnvironmentError, updateDPM };
